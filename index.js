@@ -14,7 +14,12 @@ const defaultClient = new Client({
   environment: process.env.ENVIRONMENT === "PRODUCTION" ? Environment.Production : Environment.Sandbox,
   accessToken: process.env.ACCESS_TOKEN,
 });
-
+if (process.env.NODE_ENV === "production"{
+      app.use(express.static("build"));
+      app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname,  "build", "index.html"));
+      });
+    }
 const { paymentsApi, ordersApi, locationsApi, customersApi } = defaultClient;
 
 app.post('/chargeForCookie', async (request, response) => {
